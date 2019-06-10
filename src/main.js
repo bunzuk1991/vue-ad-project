@@ -18,5 +18,10 @@ new Vue({
   render: h => h(App),
   created () {
     fb.initializeApp(firebaseConfig)
+    fb.auth().onAuthStateChanged(autoUser => {
+      if (autoUser) {
+        this.$store.dispatch('autoLoginUser', autoUser)
+      }
+    })
   }
 }).$mount('#app')

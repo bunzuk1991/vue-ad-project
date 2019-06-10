@@ -78,6 +78,11 @@ export default {
           .catch(() => {})
       }
     }
+  },
+  created () {
+    if (this.$route.query['loginError']) {
+      this.$store.dispatch('setError', 'please sign in or sign up')
+    }
   }
 }
 </script>
