@@ -24,11 +24,25 @@ export default {
       }
     ]
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    createAd (state, payload) {
+      state.ads.push(payload)
+    }
+  },
+  actions: {
+    createAd ({ commit }, payload) {
+      payload.id = '10'
+      commit('createAd', payload)
+    }
+  },
   getters: {
     ads: state => state.ads,
     promoAds: state => state.ads.filter(ad => ad.promo),
-    myAds: state => state.ads
+    myAds: state => state.ads,
+    adById (state) {
+      return adId => {
+        return state.ads.find(ad => ad.id === adId)
+      }
+    }
   }
 }

@@ -4,6 +4,8 @@ import router from './router/index'
 import store from './store'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
+import firebaseConfig from './firebase'
+import fb from 'firebase'
 
 Vue.use(Vuetify)
 
@@ -13,5 +15,8 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created () {
+    fb.initializeApp(firebaseConfig)
+  }
 }).$mount('#app')
