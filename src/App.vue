@@ -48,6 +48,24 @@
       <router-view></router-view>
 
     </v-content>
+    <template v-if="error">
+      <v-snackbar
+        :multi-line="true"
+        :timeout="5000"
+        color="error"
+        @input="closeError"
+        :value="true"
+      >
+        {{ error }}
+        <v-btn
+          dark
+          flat
+          @click="closeError"
+        >
+          Close
+        </v-btn>
+      </v-snackbar>
+    </template>
   </v-app>
 </template>
 
@@ -56,6 +74,7 @@ export default {
   data () {
     return {
       drawer: false,
+      errorSnackbar: false,
       links: [
         { title: 'Login', icon: 'lock', url: '/login' },
         { title: 'Registration', icon: 'face', url: '/registration' },
@@ -63,6 +82,16 @@ export default {
         { title: 'New ad', icon: 'note_add', url: '/new' },
         { title: 'My ads', icon: 'list', url: '/list' }
       ]
+    }
+  },
+  computed: {
+    error () {
+      return this.$store.getters.error
+    }
+  },
+  methods: {
+    closeError () {
+      this.$store.dispatch('clearError')
     }
   }
 }
