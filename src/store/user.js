@@ -11,6 +11,7 @@ export default {
   },
   mutations: {
     setUser (state, payload) {
+      console.log(payload)
       state.user = payload
     }
   },
@@ -20,7 +21,7 @@ export default {
       commit('setLoading', true)
       try {
         const fbUser = await fb.auth().createUserWithEmailAndPassword(email, password)
-        commit('setUser', new User(fbUser.uid))
+        commit('setUser', new User(fbUser.user.uid))
         commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
@@ -31,9 +32,11 @@ export default {
     async loginUser ({ commit }, { email, password }) {
       commit('clearError')
       commit('setLoading', true)
+      console.log('loginuser')
       try {
         const fbUser = await fb.auth().signInWithEmailAndPassword(email, password)
-        commit('setUser', new User(fbUser.uid))
+        console.log(fbUser, 'login')
+        commit('setUser', new User(fbUser.user.uid))
         commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
