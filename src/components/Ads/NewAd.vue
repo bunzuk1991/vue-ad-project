@@ -46,8 +46,9 @@
           <v-flex xs12>
             <v-spacer></v-spacer>
             <v-btn
-              :disabled="!valid"
+              :disabled="!valid || loading"
               class="success ml-0"
+              :loading="loading"
               @click="createAdd"
             >
               Create ad
@@ -77,6 +78,11 @@ export default {
       valid: false
     }
   },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     createAdd () {
       if (this.$refs.form.validate()) {
@@ -87,6 +93,10 @@ export default {
           imageSrc: 'https://cdn-images-1.medium.com/max/1200/1*-PlqbnwqjqJi_EVmrhmuDQ.jpeg'
         }
         this.$store.dispatch('createAd', ad)
+          .then(() => {
+            this.$router.push('/list')
+          })
+          .catch(() => {})
       } else {
         console.log('validation error')
       }

@@ -12,33 +12,14 @@ class Ad {
 }
 export default {
   state: {
-    ads: [
-      {
-        title: 'First add',
-        description: 'Hello i am description',
-        promo: false,
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-        id: '1'
-      },
-      {
-        title: 'Second add',
-        description: 'Hello i am description',
-        promo: true,
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-        id: '2'
-      },
-      {
-        title: 'Third add',
-        description: 'Hello i am description',
-        promo: true,
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-        id: '3'
-      }
-    ]
+    ads: []
   },
   mutations: {
     createAd (state, payload) {
       state.ads.push(payload)
+    },
+    loadAds (state, payload) {
+      state.ads = payload
     }
   },
   actions: {
@@ -55,9 +36,36 @@ export default {
           payload.promo
         )
         const fbValue = await fb.database().ref('ads').push(newAd)
-        console.log(fbValue)
+
+        commit('setLoading', false)
+        commit('createAd', {
+          ...newAd,
+          id: fbValue.key
+        })
       } catch (error) {
         commit('setError', error.mean)
+        commit('setLoading', false)
+        throw error
+      }
+    },
+    async fetchAds ({ commit }) {
+      commit('clearError')
+      commit('setLoading', true)
+      const resaultAds = []
+      try {
+        commit('clearError')
+        commit('setLoading', false)
+
+        const fbVal = await fb.database().ref('ads').once('value')
+        const ads = fbVal.val()
+
+        Object.keys(ads).forEach(key => {
+          const ad = ads[key]
+          resaultAds.push(ad)
+        })
+        commit('loadAds', resaultAds)
+      } catch (error) {
+        commit('setError', error.message)
         commit('setLoading', false)
         throw error
       }
