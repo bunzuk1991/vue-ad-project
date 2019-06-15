@@ -53,17 +53,17 @@ export default {
       commit('setLoading', true)
       const resaultAds = []
       try {
-        commit('clearError')
-        commit('setLoading', false)
-
         const fbVal = await fb.database().ref('ads').once('value')
         const ads = fbVal.val()
 
         Object.keys(ads).forEach(key => {
           const ad = ads[key]
-          resaultAds.push(ad)
+          resaultAds.push(
+            new Ad(ad.title, ad.description, ad.ownerId, ad.imageSrc, ad.promo, key)
+          )
         })
         commit('loadAds', resaultAds)
+        commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)
         commit('setLoading', false)

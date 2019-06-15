@@ -11,7 +11,6 @@ export default {
   },
   mutations: {
     setUser (state, payload) {
-      console.log(payload)
       state.user = payload
     }
   },
@@ -32,10 +31,8 @@ export default {
     async loginUser ({ commit }, { email, password }) {
       commit('clearError')
       commit('setLoading', true)
-      console.log('loginuser')
       try {
         const fbUser = await fb.auth().signInWithEmailAndPassword(email, password)
-        console.log(fbUser, 'login')
         commit('setUser', new User(fbUser.user.uid))
         commit('setLoading', false)
       } catch (error) {
@@ -57,7 +54,7 @@ export default {
       return state.user
     },
     isUserLoggedIn (state) {
-      return state.user !== null
+      return state.user !== null && state.user !== undefined
     }
   }
 }

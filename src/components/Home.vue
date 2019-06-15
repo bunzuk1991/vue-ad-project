@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <v-container fluid>
       <v-layout row>
         <v-flex xs12>
@@ -50,6 +50,19 @@
       </v-layout>
     </v-container>
   </div>
+  <div v-else class="pt-5">
+    <v-layout row>
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular
+          indeterminate
+          :size="120"
+          :width="10"
+          color="purple"
+        >
+        </v-progress-circular>
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
@@ -58,7 +71,8 @@ export default {
   computed: {
     ...mapGetters({
       ads: 'ads',
-      promoAds: 'promoAds'
+      promoAds: 'promoAds',
+      loading: 'loading'
     })
   }
 }
