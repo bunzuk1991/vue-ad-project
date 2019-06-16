@@ -70,7 +70,6 @@ export default {
     },
     onSave () {
       if (this.editedTitle !== '' && this.editedDescription !== '') {
-
         this.$store.dispatch('updateAd', {
           title: this.editedTitle,
           description: this.editedDescription,

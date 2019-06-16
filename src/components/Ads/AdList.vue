@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md>
     <h1 class="text--secondary mb-3">Ad list component</h1>
-    <v-layout row wrap>
+    <v-layout row wrap v-if="!loading && myAds.length !== 0">
       <v-flex
         xs12
         sm6
@@ -33,6 +33,25 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <v-layout row wrap v-else-if="!loading && myAds.length === 0">
+      <v-flex
+        xs12
+        class="text-xs-center"
+      >
+        <h1 class="text--primary">You have no ads</h1>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap v-else>
+      <v-flex xs12 class="text-xs-center">
+        <v-progress-circular
+          indeterminate
+          :size="120"
+          :width="10"
+          color="purple"
+        >
+        </v-progress-circular>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -41,7 +60,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters([
-      'myAds'
+      'myAds',
+      'loading'
     ])
   }
 }

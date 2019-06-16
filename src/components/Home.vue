@@ -43,7 +43,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn flat depressed color="green darken-1" :to="`/ad/${ad.id}`">Open</v-btn>
-              <v-btn raised color="orange darken-1">Buy</v-btn>
+              <app-buy-modal :ad="ad"></app-buy-modal>
             </v-card-actions>
           </v-card>
         </v-flex>

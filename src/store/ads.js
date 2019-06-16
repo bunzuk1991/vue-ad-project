@@ -98,12 +98,23 @@ export default {
         commit('setLoading', false)
         throw error
       }
+    },
+    async markOrderDone ({ commit, getters }, payload) {
+      commit('clearError')
+      try {
+        await fb.database().ref(`/users/${getters.user.id}/orders`).child(payload).update({ done: true })
+      } catch (error) {
+        commit('setError', error.message)
+        throw error
+      }
     }
   },
   getters: {
     ads: state => state.ads,
     promoAds: state => state.ads.filter(ad => ad.promo),
-    myAds: state => state.ads,
+    myAds: (state, getters) => state.ads.filter(ad => {
+      return ad.ownerId === getters.user.id
+    }),
     adById (state) {
       return adId => {
         return state.ads.find(ad => ad.id === adId)
